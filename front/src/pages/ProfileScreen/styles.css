@@ -1,0 +1,75 @@
+.profile_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.profile_main {
+    margin-top: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 800px;
+    gap: 35px;
+    border-bottom: 1px solid var(--color-primary-dark);
+    padding-bottom: 15px;
+}
+
+.profile_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile_info img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.profile_info h2 {
+    color: var(--color-primary);
+}
+
+.profile_add_recipe {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile_add_recipe h4 {
+    color: var(--color-primary);
+}
+
+.profile_add_recipe button {
+    padding: 10px;
+    outline: none;
+    font-size: 14px;
+    background: var(--color-primary-dark);
+    max-width: 120px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+}
+
+.profile_recipes {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    width: 800px;
+}
+
+
+@media (max-width: 820px) {
+    .profile_main {
+        width: 80%;
+    }
+
+    .profile_recipes {
+        width: 80%;
+    }
+}
