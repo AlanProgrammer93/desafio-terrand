@@ -1,0 +1,63 @@
+.modal_container {
+    width: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--box-shadow);
+    min-height: 75vh;
+    border-radius: 10px;
+    background: #fff;
+    padding: 2rem;
+}
+
+.modal_title {
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.modal_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_upload {
+    text-align: center;
+    width: 110px;
+    border: none;
+    background: var(--color-primary);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal_button {
+    background: var(--color-primary-dark);
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.upload_image {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.upload_image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+@media (max-width: 980px) {
+    .modal_container {
+        width: 90%;
+    }
+}
