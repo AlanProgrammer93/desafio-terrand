@@ -16,9 +16,6 @@ const Navbar = () => {
     router('/');
   }
 
-  console.log(user);
-  
-
   return (
     <nav className='navbar'>
       <Link className='navbar_left' to="/">HOME</Link>

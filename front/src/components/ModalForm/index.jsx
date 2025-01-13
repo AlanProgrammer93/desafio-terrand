@@ -5,14 +5,14 @@ import CustomInput from '../CustomInput';
 import CustomTextarea from '../CustomTextarea';
 import clientAxios from '../../utils/axios';
 
-const ModalForm = ({ setModalForm }) => {
+const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '', ingredientsEdit = '', imageEdit = '' }) => {
     const popup = useRef(null);
     useClickOutside(popup, () => setModalForm(false));
-
+    
     const [recipe, setRecipe] = useState({
-        name: '',
-        description: '',
-        ingredients: ''
+        name: nameEdit,
+        description: descriptionEdit,
+        ingredients: ingredientsEdit
     })
 
     const { name, description, ingredients } = recipe;
@@ -23,14 +23,14 @@ const ModalForm = ({ setModalForm }) => {
     }
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [previewImage, setPreviewImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState(imageEdit ? imageEdit : null);
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setSelectedImage(file);
             const reader = new FileReader();
             reader.onload = () => {
-                setPreviewImage(reader.result); 
+                setPreviewImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -49,12 +49,18 @@ const ModalForm = ({ setModalForm }) => {
         formData.append("name", name);
         formData.append("description", description);
         formData.append("ingredients", ingredients);
-
+        
         if (selectedImage) {
             formData.append("image", selectedImage);
         }
 
-        await clientAxios.post("/recipe", formData,
+        if (id) {
+            formData.append("id", id);
+        }
+
+        const url = id ? '/recipe/edit' : '/recipe'
+        
+        await clientAxios.post(url, formData,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -64,6 +70,7 @@ const ModalForm = ({ setModalForm }) => {
             .then(res => {
                 setRecipe({ name: '', description: '', ingredients: '' })
                 setSelectedImage(null)
+                setPreviewImage(null);
             })
             .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
             .finally(e => {
@@ -74,7 +81,7 @@ const ModalForm = ({ setModalForm }) => {
     return (
         <div className='blur'>
             <div className='modal_container' ref={popup}>
-                <h1 className='modal_title'>Publicar Receta</h1>
+                <h1 className='modal_title'>{nameEdit ? "Editar Receta" : "Publicar Receta"}</h1>
                 <div className='modal_form'>
                     <CustomInput
                         name="name"
@@ -106,7 +113,6 @@ const ModalForm = ({ setModalForm }) => {
                             id="image"
                             name="image"
                             accept="image/*"
-                            className='modal_input'
                             hidden
                             onChange={handleImageChange}
                         />
@@ -119,7 +125,7 @@ const ModalForm = ({ setModalForm }) => {
                     </div>
 
                     <button className='modal_button' onClick={handleSaveRecipe}>
-                        Publicar Receta
+                        {nameEdit ? "Editar Receta" : "Publicar Receta"}
                     </button>
                 </div>
             </div>

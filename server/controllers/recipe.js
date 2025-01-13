@@ -13,8 +13,9 @@ exports.create = async (req, res) => {
             ingredients
         });
 
-        if(req.file) {
-            const imagePath = await getFilePath(req.file.image);
+        if (req.file) {
+            const imagePath = await getFilePath(req.file);
+
             newRecipe.image = imagePath
         }
 
@@ -26,6 +27,77 @@ exports.create = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             msg: 'Ocurrio un problema en el servidor.'
+        });
+    }
+}
+
+exports.edit = async (req, res) => {
+    const { id, name, description, ingredients } = req.body;
+    const userId = req.userId;
+    
+    const recipe = await Recipe.findById(id)
+    
+    if (!recipe) {
+        return res.status(404).send({ msg: 'No existe la receta.' });
+    }
+
+    if (recipe.postedBy.toString() !== userId) {
+        return res.status(400).json({
+            msg: "No tienes permiso para editar la receta.",
+        });
+    }
+
+    try {
+        recipe.name = name
+        recipe.description = description
+        recipe.ingredients = ingredients
+
+        if (req.file) {
+            const imagePath = await getFilePath(req.file);
+            recipe.image = imagePath
+        }
+
+        await recipe.save();
+
+        return res.status(200).json({
+            msg: 'Receta Editada Correctamente.'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ocurrio un problema en el servidor.'
+        });
+    }
+}
+
+exports.getOwnRecipes = async (req, res) => {
+    try {
+        const userId = req.userId
+
+        const recipes = await Recipe.find({ postedBy: userId }).sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            recipes
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ha ocurrido un error interno.'
+        });
+    }
+}
+
+exports.getAllRecipes = async (req, res) => {
+    try {
+        const recipes = await Recipe.find()
+            .populate("postedBy", "_id name lastname")
+            .populate("ratings.ratingBy", "_id name lastname")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            recipes
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ha ocurrido un error interno.'
         });
     }
 }

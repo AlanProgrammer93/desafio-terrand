@@ -1,14 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles.css'
 import Navbar from '../../components/Navbar'
 import { useSelector } from 'react-redux';
 import RecipeCard from '../../components/RecipeCard';
 import ModalForm from '../../components/ModalForm';
+import clientAxios from '../../utils/axios';
 
 const ProfileScreen = () => {
     const { user } = useSelector((state) => state.user);
-    console.log(user);
+
     const [modalForm, setModalForm] = useState(false)
+    const [ownRecipes, setOwnRecipes] = useState([])
+
+    useEffect(() => {
+        getOwnRecipes()
+    }, [])
+
+    const getOwnRecipes = async () => {
+        await clientAxios.get('/recipe/own-recipes', {
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        })
+            .then(res => {
+                setOwnRecipes(res.data.recipes)
+            })
+            .catch(err => {
+
+            });
+    }
+
+    console.log(ownRecipes);
 
 
     return (
@@ -16,22 +38,33 @@ const ProfileScreen = () => {
             <Navbar />
             <div className='profile_main'>
                 <div className='profile_info'>
-                    <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' />
+                    <img src='/perfil.webp' />
                     <h2>{user.name} {user.lastname}</h2>
                 </div>
                 <div className='profile_add_recipe'>
-                    <h4>Recetas Publicadas: 0</h4>
+                    <h4>Recetas Publicadas: {ownRecipes.length}</h4>
                     <button onClick={() => setModalForm(true)} >Nueva Receta</button>
                 </div>
             </div>
             <div className="profile_recipes">
-                <RecipeCard
-                    image={'https://s2.abcstatics.com/abc/sevilla/media/gurmesevilla/2012/01/comida-rapida-casera.jpg'}
-                    title={'Ensalada César'}
-                    description={'Una deliciosa y saludable ensalada César para disfrutar. Una deliciosa y saludable ensalada César para disfrutar. Una deliciosa y saludable ensalada César para disfrutar. Una deliciosa y saludable ensalada César para disfrutar.'}
-                    ingredients={'Lechuga, pollo, queso parmesano, aderezo César, Lechuga, pollo, queso parmesano, aderezo César, Lechuga, pollo, queso parmesano, aderezo César.'}
+                {
+                    ownRecipes ? ownRecipes.map(recipe => (
+                        <RecipeCard
+                            key={recipe._id}
+                            id={recipe._id}
+                            image={`http://localhost:5000/${recipe.image}`}
+                            title={recipe.name}
+                            description={recipe.description}
+                            ingredients={recipe.ingredients}
+                            ratings={recipe.ratings}
+                        />
+                    )) : (
+                        <div>
+                            <p>Aun no tienes ninguna receta publicada.</p>
+                        </div>
+                    )
+                }
 
-                />
             </div>
 
             {

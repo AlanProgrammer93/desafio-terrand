@@ -59,5 +59,30 @@
     height: 25px;
     padding: 5px;
     cursor: pointer;
-    color: var(--color-primary-dark);;
+    color: var(--color-primary-dark);
+    position: relative;
+}
+
+.menu_options {
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu_options .option {
+    padding: 5px;
+    background: var(--color-primary);
+    color: white;
+}
+
+.menu_options .option:last-child {
+    margin-top: 2px;
+    background: red;
+}
+
+.menu_options .option:hover {
+   opacity: 0.7;
 }
