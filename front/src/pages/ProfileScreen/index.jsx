@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import RecipeCard from '../../components/RecipeCard';
 import ModalForm from '../../components/ModalForm';
 import clientAxios from '../../utils/axios';
+import { SERVER } from '../../constants';
 
 const ProfileScreen = () => {
     const { user } = useSelector((state) => state.user);
@@ -49,7 +50,7 @@ const ProfileScreen = () => {
                         <RecipeCard
                             key={recipe._id}
                             id={recipe._id}
-                            image={`http://localhost:5000/${recipe.image}`}
+                            image={`${SERVER}${recipe.image}`}
                             title={recipe.name}
                             description={recipe.description}
                             ingredients={recipe.ingredients}

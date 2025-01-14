@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import clientAxios from '../../utils/axios';
 import RecipeCardHome from '../../components/RecipeCardHome';
 import { addRecipes } from '../../store/recipeReducer';
+import { SERVER } from '../../constants';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const HomeScreen = () => {
             <RecipeCardHome
               key={recipe._id}
               id={recipe._id}
-              image={`http://localhost:5000/${recipe.image}`}
+              image={`${SERVER}${recipe.image}`}
               title={recipe.name}
               description={recipe.description}
               ingredients={recipe.ingredients}
