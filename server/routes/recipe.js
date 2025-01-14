@@ -2,7 +2,7 @@ const express = require('express')
 const multer = require('multer');
 const path = require("path");
 
-const { create, getOwnRecipes, getAllRecipes, edit, rating, getRecipe } = require('../controllers/recipe')
+const { create, getOwnRecipes, getAllRecipes, edit, rating, getRecipe, deleteRecipe } = require('../controllers/recipe')
 const { authCheck } = require('../middleware/auth');
 
 const storage = multer.diskStorage({
@@ -24,5 +24,6 @@ router.get('/', getAllRecipes);
 router.get('/:idRecipe', getRecipe);
 router.post('/edit', [authCheck, upload.single('image')], edit);
 router.put('/rating', authCheck, rating);
+router.delete("/delete/:id", authCheck, deleteRecipe);
 
 module.exports = router;

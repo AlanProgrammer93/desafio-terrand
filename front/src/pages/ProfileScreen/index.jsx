@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import './styles.css'
 import Navbar from '../../components/Navbar'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RecipeCard from '../../components/RecipeCard';
 import ModalForm from '../../components/ModalForm';
 import clientAxios from '../../utils/axios';
 import { SERVER } from '../../constants';
+import { addOwnRecipes } from '../../store/ownRecipeReducer';
 
 const ProfileScreen = () => {
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
+    const { ownRecipes } = useSelector((state) => state.ownRecipes);
 
     const [modalForm, setModalForm] = useState(false)
-    const [ownRecipes, setOwnRecipes] = useState([])
     const [loading, setLoading] = useState(false)
-
+    console.log(ownRecipes);
+    
     useEffect(() => {
         getOwnRecipes()
     }, [])
@@ -26,7 +29,7 @@ const ProfileScreen = () => {
             }
         })
             .then(res => {
-                setOwnRecipes(res.data.recipes)
+                dispatch(addOwnRecipes(res.data.recipes));
             })
             .finally(e => {
                 setLoading(false)

@@ -5,8 +5,11 @@ import CustomInput from '../CustomInput';
 import CustomTextarea from '../CustomTextarea';
 import clientAxios from '../../utils/axios';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addOwnRecipes } from '../../store/ownRecipeReducer';
 
 const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '', ingredientsEdit = '', imageEdit = '' }) => {
+    const dispatch = useDispatch();
     const popup = useRef(null);
     useClickOutside(popup, () => setModalForm(false));
 
@@ -71,6 +74,7 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
                 setSelectedImage(null)
                 setPreviewImage(null);
                 toast.success(res.data.msg);
+                dispatch(addOwnRecipes(res.data.recipes));
             })
             .catch(err => toast.error(err.response.data.msg))
     };

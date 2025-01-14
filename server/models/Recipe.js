@@ -20,7 +20,7 @@ const recipeSchema = new Schema({
     },
     image: {
         type: String,
-        default: "recipe-default.png"
+        default: "recipes/recipe-default.webp"
     },
     ratings: [
         {

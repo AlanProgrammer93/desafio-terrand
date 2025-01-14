@@ -3,8 +3,13 @@ import './styles.css'
 import { HiDotsVertical } from 'react-icons/hi'
 import ModalForm from '../ModalForm'
 import { useNavigate } from 'react-router'
+import clientAxios from '../../utils/axios'
+import { toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { addOwnRecipes } from '../../store/ownRecipeReducer'
 
 const RecipeCard = ({ id, image, title, description, ingredients, ratings }) => {
+    const dispatch = useDispatch();
     const router = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false)
@@ -16,6 +21,19 @@ const RecipeCard = ({ id, image, title, description, ingredients, ratings }) => 
 
     const handleSeeMore = () => {
         router(`/${id}`);
+    }
+
+    const handleDelete = async () => {
+        await clientAxios.delete(`/recipe/delete/${id}`, {
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        })
+            .then(res => {
+                toast.success(res.data.msg);
+                dispatch(addOwnRecipes(res.data.recipes));
+            })
+            .catch(err => toast.error(err.response.data.msg))
     }
     return (
         <div className="recipe_card">
@@ -53,7 +71,7 @@ const RecipeCard = ({ id, image, title, description, ingredients, ratings }) => 
                             <div className='option' onClick={() => setModalForm(true)}>
                                 Editar
                             </div>
-                            <div className='option'>
+                            <div className='option' onClick={handleDelete}>
                                 Eliminar
                             </div>
                         </div>

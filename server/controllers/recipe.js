@@ -1,7 +1,6 @@
 const Recipe = require("../models/Recipe");
 
 exports.create = async (req, res) => {
-
     const { name, description, ingredients } = req.body;
     const userId = req.userId;
 
@@ -21,8 +20,11 @@ exports.create = async (req, res) => {
 
         await newRecipe.save();
 
+        const recipes = await Recipe.find({ postedBy: userId }).sort({ createdAt: -1 });
+
         return res.status(200).json({
-            msg: 'Receta Creada Correctamente.'
+            msg: 'Receta Creada Correctamente.',
+            recipes
         });
     } catch (error) {
         return res.status(500).json({
@@ -59,8 +61,11 @@ exports.edit = async (req, res) => {
 
         await recipe.save();
 
+        const recipes = await Recipe.find({ postedBy: userId }).sort({ createdAt: -1 });
+
         return res.status(200).json({
-            msg: 'Receta Editada Correctamente.'
+            msg: 'Receta Editada Correctamente.',
+            recipes
         });
     } catch (error) {
         return res.status(500).json({
@@ -162,14 +167,41 @@ exports.rating = async (req, res) => {
     }
 }
 
+exports.deleteRecipe = async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id)
+        const userId = req.userId;
+
+        if (!recipe) {
+            return res.status(404).send({ msg: 'No existe la receta.' });
+        }
+
+        if (recipe.postedBy.toString() !== userId) {
+            return res.status(400).json({
+                msg: "No tienes permiso para eliminar la receta.",
+            });
+        }
+
+        await recipe.deleteOne();
+
+        const recipes = await Recipe.find({ postedBy: userId }).sort({ createdAt: -1 });
+
+        return res.status(200).json({ msg: "Eliminado Correctamente", recipes });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ha ocurrido un error interno.'
+        });
+    }
+}
+
 async function getFilePath(file) {
     const filePath = file.path;
 
     //  PARA WINDOWS
-    const fileSplit = filePath.split("\\");
+    // const fileSplit = filePath.split("\\");
 
     //PARA UBUNTU
-    // const fileSplit = filePath.split("/");
+    const fileSplit = filePath.split("/");
 
     return `${fileSplit[1]}/${fileSplit[2]}`;
 }

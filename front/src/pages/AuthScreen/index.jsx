@@ -40,6 +40,13 @@ const AuthScreen = () => {
       return
     }
 
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!regex.test(email)) {
+      toast.error("Ingrese un correo valido.");
+      setLoading(false)
+      return
+    }
+
     if (password.length < 6) {
       toast.error("La contraseña debe tener al menos 6 caracteres.");
       setLoading(false)
