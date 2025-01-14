@@ -8,6 +8,7 @@ import Loading from '../../components/Loading';
 import Navbar from '../../components/Navbar';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
+import { toast } from 'react-toastify';
 
 const AuthScreen = () => {
   const [loading, setLoading] = useState(false)
@@ -34,18 +35,18 @@ const AuthScreen = () => {
     e.preventDefault();
     setLoading(true)
     if (!name || !lastname || !email || !password || !confirmPassword) {
-      alert('Todos los campos son requeridos')
+      toast.error("Todos los campos son requeridos.");
       setLoading(false)
       return
     }
 
     if (password.length < 6) {
-      alert('La contraseña debe tener al menos 6 caracteres')
+      toast.error("La contraseña debe tener al menos 6 caracteres.");
       setLoading(false)
       return
     }
     if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden')
+      toast.error("Las contraseñas no coinciden.");
       setLoading(false)
       return
     }
@@ -61,7 +62,7 @@ const AuthScreen = () => {
         dispatch(addUser(res.data.user));
         router("/");
       })
-      .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
+      .catch(err => toast.error(err.response.data.msg))
       .finally(e => {
         setLoading(false)
       })
@@ -71,7 +72,7 @@ const AuthScreen = () => {
     e.preventDefault();
     setLoading(true)
     if (!email || !password) {
-      alert('Todos los campos son requeridos')
+      toast.error("Todos los campos son requeridos.");
       setLoading(false)
       return
     }
@@ -85,7 +86,7 @@ const AuthScreen = () => {
         dispatch(addUser(res.data.user));
         router("/");
       })
-      .catch(err => alert("Usuario o contraseña incorrecta."))
+      .catch(err => toast.error(err.response.data.msg))
       .finally(e => {
         setLoading(false)
       })

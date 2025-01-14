@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import clientAxios from '../../utils/axios';
 import { useSelector } from 'react-redux';
 import Rating from '../../components/Rating';
+import { toast } from 'react-toastify';
 
 const RecipeScreen = () => {
   const { idRecipe } = useParams();
@@ -23,19 +24,19 @@ const RecipeScreen = () => {
   }, [])
 
   const getRecipe = async () => {
+    setLoading(true)
     await clientAxios.get(`/recipe/${idRecipe}`)
       .then(res => {
         setRecipe(res.data.recipe)
       })
-      .catch(err => {
-
-      });
+      .finally(e => {
+        setLoading(false)
+      })
   }
 
   const handleRating = async (value) => {
-    setLoading(true)
     if (!user) {
-      alert("Debes iniciar sesion.")
+      toast.error("Debes iniciar sesion.");
       return
     }
 
@@ -46,7 +47,7 @@ const RecipeScreen = () => {
         }
       })
       .then(res => {
-        alert(res.data.msg)
+        toast.success(res.data.msg);
         if (rating) {
           setRecipe((prev) => ({
             ...prev,
@@ -61,10 +62,7 @@ const RecipeScreen = () => {
           }));
         }
       })
-      .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
-      .finally(e => {
-        setLoading(false)
-      })
+      .catch(err => toast.error("Ocurrio un problema en el servidor. Intentelo de nuevo."))
   }
   return (
     <div className='recipe_container'>
@@ -107,9 +105,16 @@ const RecipeScreen = () => {
                 }
               </div>
             </>
-          ) : (
-            <div>No existe la receta</div>
+          ) : loading ? (
+            <div className='recipe_loading'>
+              <p>Espere...</p>
+            </div>
           )
+            : (
+              <div className='recipe_loading'>
+                <p>No existe la receta</p>
+              </div>
+            )
         }
       </div>
     </div>

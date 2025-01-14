@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { ToastContainer } from 'react-toastify';
 import './App.css'
 import clientAxios from './utils/axios';
 import { addUser } from './store/userReducer';
@@ -38,6 +39,16 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        theme="dark"
+        style={{ zIndex: '999999' }}
+      />
       <Routes>
         <Route
           path="/"

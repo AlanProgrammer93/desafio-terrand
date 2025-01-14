@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './styles.css'
 import Rating from '../Rating'
 import { useDispatch, useSelector } from 'react-redux';
 import clientAxios from '../../utils/axios';
 import { useNavigate } from 'react-router';
 import { updateRecipe } from '../../store/recipeReducer';
+import { toast } from 'react-toastify';
 
 const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, postedBy }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const router = useNavigate();
-  const [loading, setLoading] = useState(false)
 
   const rating = ratings.find(rat => rat.ratingBy._id === user?.id)
   const stars = Math.floor(
@@ -18,9 +18,8 @@ const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, p
   );
 
   const handleRating = async (value) => {
-    setLoading(true)
     if (!user) {
-      alert("Debes iniciar sesion.")
+      toast.error("Debes iniciar sesion.");
       return
     }
 
@@ -31,13 +30,10 @@ const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, p
         }
       })
       .then(res => {
-        alert(res.data.msg)
+        toast.success(res.data.msg);
         dispatch(updateRecipe({ id, user: { _id: user.id, name: user.name, lastname: user.lastname }, rating: value }));
       })
-      .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
-      .finally(e => {
-        setLoading(false)
-      })
+      .catch(err => toast.error("Ocurrio un problema en el servidor. Intentelo de nuevo."))
   }
 
   const handleSeeMore = () => {

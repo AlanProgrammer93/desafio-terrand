@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles.css'
 import Navbar from '../../components/Navbar'
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,26 +11,27 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const { recipes } = useSelector((state) => state.recipes);
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     getRecipes()
   }, [])
 
   const getRecipes = async () => {
+    setLoading(true)
     await clientAxios.get('/recipe')
       .then(res => {
         dispatch(addRecipes(res.data.recipes));
       })
-      .catch(err => {
-
-      });
+      .finally(e => setLoading(false))
   }
-  
+
   return (
     <div className="home_container">
       <Navbar />
       <div className="home_main">
         {
-          recipes ? recipes.map(recipe => (
+          recipes.length ? recipes.map(recipe => (
             <RecipeCardHome
               key={recipe._id}
               id={recipe._id}
@@ -41,11 +42,8 @@ const HomeScreen = () => {
               ratings={recipe.ratings}
               postedBy={recipe.postedBy}
             />
-          )) : (
-            <div>
-              <p>No hay ninguna receta publicada.</p>
-            </div>
-          )
+          )) : loading ? <p>Espere...</p>
+            : <p>No Hay Recetas Publicadas</p>
         }
       </div>
     </div>

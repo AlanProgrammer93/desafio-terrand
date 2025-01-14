@@ -12,12 +12,14 @@ const ProfileScreen = () => {
 
     const [modalForm, setModalForm] = useState(false)
     const [ownRecipes, setOwnRecipes] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getOwnRecipes()
     }, [])
 
     const getOwnRecipes = async () => {
+        setLoading(true)
         await clientAxios.get('/recipe/own-recipes', {
             headers: {
                 token: localStorage.getItem('token')
@@ -26,9 +28,9 @@ const ProfileScreen = () => {
             .then(res => {
                 setOwnRecipes(res.data.recipes)
             })
-            .catch(err => {
-
-            });
+            .finally(e => {
+                setLoading(false)
+            })
     }
 
     return (
@@ -46,7 +48,7 @@ const ProfileScreen = () => {
             </div>
             <div className="profile_recipes">
                 {
-                    ownRecipes ? ownRecipes.map(recipe => (
+                    ownRecipes.length ? ownRecipes.map(recipe => (
                         <RecipeCard
                             key={recipe._id}
                             id={recipe._id}
@@ -56,11 +58,16 @@ const ProfileScreen = () => {
                             ingredients={recipe.ingredients}
                             ratings={recipe.ratings}
                         />
-                    )) : (
-                        <div>
-                            <p>Aun no tienes ninguna receta publicada.</p>
+                    )) : loading ? (
+                        <div className='recipe_loading'>
+                            <p>Espere...</p>
                         </div>
                     )
+                        : (
+                            <div className='recipe_loading'>
+                                <p>Aun no tienes ninguna receta publicada.</p>
+                            </div>
+                        )
                 }
             </div>
             {

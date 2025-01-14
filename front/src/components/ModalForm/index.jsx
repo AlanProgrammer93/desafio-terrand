@@ -4,11 +4,12 @@ import useClickOutside from '../../utils/clickOutside';
 import CustomInput from '../CustomInput';
 import CustomTextarea from '../CustomTextarea';
 import clientAxios from '../../utils/axios';
+import { toast } from 'react-toastify';
 
 const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '', ingredientsEdit = '', imageEdit = '' }) => {
     const popup = useRef(null);
     useClickOutside(popup, () => setModalForm(false));
-    
+
     const [recipe, setRecipe] = useState({
         name: nameEdit,
         description: descriptionEdit,
@@ -36,12 +37,10 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
         }
     };
 
-    const [loading, setLoading] = useState(false)
     const handleSaveRecipe = async () => {
-        setLoading(true)
 
         if (!name || !description || !ingredients) {
-            alert("Debes completar todos los campos.")
+            toast.error("Debes completar todos los campos.");
             return
         }
 
@@ -49,7 +48,7 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
         formData.append("name", name);
         formData.append("description", description);
         formData.append("ingredients", ingredients);
-        
+
         if (selectedImage) {
             formData.append("image", selectedImage);
         }
@@ -59,7 +58,7 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
         }
 
         const url = id ? '/recipe/edit' : '/recipe'
-        
+
         await clientAxios.post(url, formData,
             {
                 headers: {
@@ -71,11 +70,9 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
                 setRecipe({ name: '', description: '', ingredients: '' })
                 setSelectedImage(null)
                 setPreviewImage(null);
+                toast.success(res.data.msg);
             })
-            .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
-            .finally(e => {
-                setLoading(false)
-            })
+            .catch(err => toast.error(err.response.data.msg))
     };
 
     return (
