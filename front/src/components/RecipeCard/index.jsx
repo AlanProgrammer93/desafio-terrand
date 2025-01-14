@@ -6,7 +6,6 @@ import ModalForm from '../ModalForm'
 const RecipeCard = ({ id, image, title, description, ingredients, ratings }) => {
     const [showMenu, setShowMenu] = useState(false)
     const [modalForm, setModalForm] = useState(false)
-    console.log(ratings.length);
 
     return (
         <div className="recipe_card">

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './styles.css'
 import Navbar from '../../components/Navbar'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clientAxios from '../../utils/axios';
 import RecipeCardHome from '../../components/RecipeCardHome';
+import { addRecipes } from '../../store/recipeReducer';
 
 const HomeScreen = () => {
-  const { user } = useSelector((state) => state.user);
-  const [recipes, setRecipes] = useState([])
+  const dispatch = useDispatch();
+  const { recipes } = useSelector((state) => state.recipes);
 
   useEffect(() => {
     getRecipes()
@@ -16,13 +17,12 @@ const HomeScreen = () => {
   const getRecipes = async () => {
     await clientAxios.get('/recipe')
       .then(res => {
-        setRecipes(res.data.recipes)
+        dispatch(addRecipes(res.data.recipes));
       })
       .catch(err => {
 
       });
   }
-  console.log(recipes);
   
   return (
     <div className="home_container">

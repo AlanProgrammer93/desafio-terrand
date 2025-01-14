@@ -34,9 +34,9 @@ exports.create = async (req, res) => {
 exports.edit = async (req, res) => {
     const { id, name, description, ingredients } = req.body;
     const userId = req.userId;
-    
+
     const recipe = await Recipe.findById(id)
-    
+
     if (!recipe) {
         return res.status(404).send({ msg: 'No existe la receta.' });
     }
@@ -94,6 +94,64 @@ exports.getAllRecipes = async (req, res) => {
 
         return res.status(200).json({
             recipes
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ha ocurrido un error interno.'
+        });
+    }
+}
+
+exports.getRecipe = async (req, res) => {
+    const idRecipe = req.params.idRecipe;
+    try {
+        const recipe = await Recipe.findById(idRecipe)
+
+        return res.status(200).json({
+            recipe
+        });
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ha ocurrido un error interno.'
+        });
+    }
+}
+
+exports.rating = async (req, res) => {
+    const { id, value } = req.body;
+    const userId = req.userId;
+
+    try {
+        const recipe = await Recipe.findById(id);
+
+        const existingRating = recipe.ratings.find((r) => r.ratingBy.toString() === userId);
+
+        if (existingRating) {
+            await Recipe.updateOne(
+                {
+                    _id: id,
+                    "ratings.ratingBy": userId,
+                },
+                {
+                    $set: { "ratings.$.rating": value },
+                }
+            )
+        } else {
+            await Recipe.findByIdAndUpdate(
+                id,
+                {
+                    $push: {
+                        ratings: {
+                            ratingBy: userId,
+                            rating: value,
+                        },
+                    },
+                }
+            )
+        }
+
+        return res.status(200).json({
+            msg: 'Puntuacion Guardada Correctamente.'
         });
     } catch (error) {
         return res.status(500).json({

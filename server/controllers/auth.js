@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
 
                 res.status(200).json({
                     msg: 'Usuario Creado Correctamente',
-                    user: { name, lastname },
+                    user: { id: user._id, name, lastname },
                     token
                 });
             });
@@ -58,7 +58,7 @@ exports.currentUser = async (req, res) => {
                 (err, token) => {
                     if (err) throw err;
                     res.status(200).json({
-                        user: { name: user.name, lastname: user.lastname },
+                        user: { id: user._id, name: user.name, lastname: user.lastname },
                         token
                     });
                 });
@@ -95,7 +95,7 @@ exports.login = async (req, res) => {
                 (err, token) => {
                     if (err) throw err;
                     res.status(200).json({
-                        user: { name: user.name, lastname: user.lastname },
+                        user: { id: user._id, name: user.name, lastname: user.lastname },
                         token
                     });
                 });

@@ -30,9 +30,6 @@ const ProfileScreen = () => {
             });
     }
 
-    console.log(ownRecipes);
-
-
     return (
         <div className='profile_container'>
             <Navbar />

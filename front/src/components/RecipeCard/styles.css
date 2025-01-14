@@ -47,6 +47,7 @@
 .stars {
     color: #ffca28;
     margin-right: 5px;
+    display: flex;
 }
 
 .rating_number {
