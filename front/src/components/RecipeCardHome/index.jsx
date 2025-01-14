@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import './styles.css'
 import Rating from '../Rating'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clientAxios from '../../utils/axios';
 import { useNavigate } from 'react-router';
+import { updateRecipe } from '../../store/recipeReducer';
 
 const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, postedBy }) => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const router = useNavigate();
   const [loading, setLoading] = useState(false)
@@ -30,6 +32,7 @@ const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, p
       })
       .then(res => {
         alert(res.data.msg)
+        dispatch(updateRecipe({ id, user: { _id: user.id, name: user.name, lastname: user.lastname }, rating: value }));
       })
       .catch(err => alert("Ocurrio un problema en el servidor. Intentelo de nuevo."))
       .finally(e => {

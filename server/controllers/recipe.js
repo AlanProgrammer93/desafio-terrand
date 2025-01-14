@@ -106,6 +106,8 @@ exports.getRecipe = async (req, res) => {
     const idRecipe = req.params.idRecipe;
     try {
         const recipe = await Recipe.findById(idRecipe)
+            .populate("postedBy", "_id name lastname")
+            .populate("ratings.ratingBy", "_id name lastname")
 
         return res.status(200).json({
             recipe

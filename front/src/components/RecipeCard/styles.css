@@ -25,6 +25,7 @@
     font-size: 1.5rem;
     color: #ff5722;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .recipe_description {

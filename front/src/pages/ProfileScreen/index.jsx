@@ -61,9 +61,7 @@ const ProfileScreen = () => {
                         </div>
                     )
                 }
-
             </div>
-
             {
                 modalForm && <ModalForm setModalForm={setModalForm} />
             }
