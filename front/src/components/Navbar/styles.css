@@ -41,3 +41,12 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+@media (max-width: 450px) {
+    .navbar {
+        padding: 0 20px;
+    }
+    .navbar_right {
+        gap: 5px;
+    }
+}

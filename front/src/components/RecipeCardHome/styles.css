@@ -65,3 +65,19 @@
     color: #fff;
     border: none;
 }
+
+@media (max-width: 450px) {
+    .recipe_card_home {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .info_recipe {
+        width: 100%;
+        gap: 3px;
+    }
+
+    .card_home_container {
+        width: 100%;
+    }
+}

@@ -164,3 +164,9 @@
         top: 150px;
     }
 }
+
+@media (max-width: 450px) {
+    .auth {
+        min-height: calc(100vh + 60px);
+    }
+}

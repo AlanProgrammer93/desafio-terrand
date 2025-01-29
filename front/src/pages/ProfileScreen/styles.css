@@ -73,3 +73,13 @@
         width: 80%;
     }
 }
+
+@media (max-width: 450px) {
+    .profile_main {
+        width: 90%;
+    }
+
+    .profile_recipes {
+        width: 90%;
+    }
+}

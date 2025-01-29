@@ -17,6 +17,19 @@
     margin-bottom: 1rem;
 }
 
+.bottom_close {
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+    color: red;
+    cursor: pointer;
+}
+
+.bottom_close svg {
+    width: 25px;
+    height: 25px;
+}
+
 .modal_form {
     display: flex;
     flex-direction: column;
@@ -59,5 +72,21 @@
 @media (max-width: 980px) {
     .modal_container {
         width: 90%;
+    }
+}
+
+@media (max-width: 450px) {
+    .modal_container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .modal_container h1 {
+        font-size: 1.5em;
+    }
+
+    .bottom_close {
+        right: 5px;
+        top: 5px;
     }
 }

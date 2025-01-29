@@ -6,6 +6,10 @@ import clientAxios from '../../utils/axios';
 import { useSelector } from 'react-redux';
 import Rating from '../../components/Rating';
 import { toast } from 'react-toastify';
+import { formatDistanceToNow } from 'date-fns'
+import { es } from 'date-fns/locale';
+import { SERVER } from '../../constants';
+import Spinner from '../../components/Spinner';
 
 const RecipeScreen = () => {
   const { idRecipe } = useParams();
@@ -74,10 +78,12 @@ const RecipeScreen = () => {
               <div className='recipe_header'>
                 <h1>{recipe.name}</h1>
                 <span>Publicado por
-                  <strong> {recipe.postedBy.name} {recipe.postedBy.lastname}</strong>
+                  <strong> {recipe.postedBy.name} {recipe.postedBy.lastname} </strong>
+                  hace {formatDistanceToNow(recipe.createdAt, { addSuffix: true, locale: es })}
                 </span>
               </div>
               <div className='recipe_body'>
+                <img src={`${SERVER}${recipe.image}`} />
                 <h2>Descripcion de la receta</h2>
                 <p>{recipe.description}</p>
                 <h2>Ingredientes</h2>
@@ -107,7 +113,7 @@ const RecipeScreen = () => {
             </>
           ) : loading ? (
             <div className='recipe_loading'>
-              <p>Espere...</p>
+              <Spinner />
             </div>
           )
             : (

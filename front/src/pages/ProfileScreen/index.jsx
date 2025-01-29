@@ -7,6 +7,7 @@ import ModalForm from '../../components/ModalForm';
 import clientAxios from '../../utils/axios';
 import { SERVER } from '../../constants';
 import { addOwnRecipes } from '../../store/ownRecipeReducer';
+import Spinner from '../../components/Spinner';
 
 const ProfileScreen = () => {
     const dispatch = useDispatch();
@@ -15,7 +16,6 @@ const ProfileScreen = () => {
 
     const [modalForm, setModalForm] = useState(false)
     const [loading, setLoading] = useState(false)
-    console.log(ownRecipes);
     
     useEffect(() => {
         getOwnRecipes()
@@ -63,7 +63,7 @@ const ProfileScreen = () => {
                         />
                     )) : loading ? (
                         <div className='recipe_loading'>
-                            <p>Espere...</p>
+                            <Spinner />
                         </div>
                     )
                         : (

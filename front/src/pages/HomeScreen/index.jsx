@@ -6,6 +6,7 @@ import clientAxios from '../../utils/axios';
 import RecipeCardHome from '../../components/RecipeCardHome';
 import { addRecipes } from '../../store/recipeReducer';
 import { SERVER } from '../../constants';
+import Spinner from '../../components/Spinner';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const HomeScreen = () => {
               ratings={recipe.ratings}
               postedBy={recipe.postedBy}
             />
-          )) : loading ? <p>Espere...</p>
+          )) : loading ? <Spinner />
             : <p>No Hay Recetas Publicadas</p>
         }
       </div>

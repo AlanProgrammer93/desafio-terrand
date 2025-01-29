@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import './styles.css'
+import { IoMdCloseCircle } from 'react-icons/io'
 import useClickOutside from '../../utils/clickOutside';
 import CustomInput from '../CustomInput';
 import CustomTextarea from '../CustomTextarea';
@@ -83,6 +84,9 @@ const ModalForm = ({ setModalForm, id = '', nameEdit = '', descriptionEdit = '',
         <div className='blur'>
             <div className='modal_container' ref={popup}>
                 <h1 className='modal_title'>{nameEdit ? "Editar Receta" : "Publicar Receta"}</h1>
+                <div className='bottom_close' onClick={() => setModalForm(false)}>
+                    <IoMdCloseCircle />
+                </div>
                 <div className='modal_form'>
                     <CustomInput
                         name="name"
