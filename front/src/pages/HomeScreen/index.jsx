@@ -26,7 +26,7 @@ const HomeScreen = () => {
       })
       .finally(e => setLoading(false))
   }
-
+  console.log("se ejecuta home");
   return (
     <div className="home_container">
       <Navbar />

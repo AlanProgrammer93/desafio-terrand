@@ -68,6 +68,8 @@ const RecipeScreen = () => {
       })
       .catch(err => toast.error("Ocurrio un problema en el servidor. Intentelo de nuevo."))
   }
+  console.log("se ejecuta recipe screen");
+  
   return (
     <div className='recipe_container'>
       <Navbar />
@@ -79,7 +81,7 @@ const RecipeScreen = () => {
                 <h1>{recipe.name}</h1>
                 <span>Publicado por
                   <strong> {recipe.postedBy.name} {recipe.postedBy.lastname} </strong>
-                  hace {formatDistanceToNow(recipe.createdAt, { addSuffix: true, locale: es })}
+                  {formatDistanceToNow(recipe.createdAt, { addSuffix: true, locale: es })}
                 </span>
               </div>
               <div className='recipe_body'>
