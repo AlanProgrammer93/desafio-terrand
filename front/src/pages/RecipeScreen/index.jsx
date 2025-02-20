@@ -16,7 +16,7 @@ const RecipeScreen = () => {
   const { user } = useSelector((state) => state.user);
 
   const [recipe, setRecipe] = useState()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const rating = recipe?.ratings.find(rat => rat.ratingBy._id === user?.id)
   const stars = Math.floor(
@@ -28,7 +28,7 @@ const RecipeScreen = () => {
   }, [])
 
   const getRecipe = async () => {
-    setLoading(true)
+    //setLoading(true)
     await clientAxios.get(`/recipe/${idRecipe}`)
       .then(res => {
         setRecipe(res.data.recipe)
@@ -68,8 +68,6 @@ const RecipeScreen = () => {
       })
       .catch(err => toast.error("Ocurrio un problema en el servidor. Intentelo de nuevo."))
   }
-  console.log("se ejecuta recipe screen");
-  
   return (
     <div className='recipe_container'>
       <Navbar />

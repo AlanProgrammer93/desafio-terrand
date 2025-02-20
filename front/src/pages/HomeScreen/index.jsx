@@ -12,21 +12,20 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const { recipes } = useSelector((state) => state.recipes);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getRecipes()
   }, [])
 
   const getRecipes = async () => {
-    setLoading(true)
+    //setLoading(true)
     await clientAxios.get('/recipe')
       .then(res => {
         dispatch(addRecipes(res.data.recipes));
       })
       .finally(e => setLoading(false))
   }
-  console.log("se ejecuta home");
   return (
     <div className="home_container">
       <Navbar />
