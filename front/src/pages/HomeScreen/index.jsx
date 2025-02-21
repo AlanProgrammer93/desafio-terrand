@@ -13,16 +13,16 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const { recipes } = useSelector((state) => state.recipes);
   //const [recipes, setRecipes] = useState([])
-  const [loading, setLoading] = useState(true)
+  //const [loading, setLoading] = useState(true)
 
-  /* const { testRecipes, loading, error } = useSelector((state) => state.testRecipes);
+  const { testRecipes, loading, error } = useSelector((state) => state.testRecipes);
   useEffect(() => {
     if (testRecipes?.length === 0) {
       dispatch(fetchRecipes());
     }
-  }, [dispatch, testRecipes?.length]); */
+  }, [dispatch, testRecipes?.length]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getRecipes()
   }, [])
 
@@ -30,17 +30,17 @@ const HomeScreen = () => {
     await clientAxios.get('/recipe')
       .then(res => {
         dispatch(addRecipes(res.data.recipes));
-        //setRecipes(res.data.recipes)
+        setRecipes(res.data.recipes)
       })
       .finally(e => setLoading(false))
-  }
+  } */
   
   return (
     <div className="home_container">
       <Navbar />
       <div className="home_main">
         {
-          recipes.length ? recipes.map(recipe => (
+          testRecipes.length ? testRecipes.map(recipe => (
             <RecipeCardHome
               key={recipe._id}
               id={recipe._id}

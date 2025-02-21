@@ -4,8 +4,9 @@ import Rating from '../Rating'
 import { useDispatch, useSelector } from 'react-redux';
 import clientAxios from '../../utils/axios';
 import { useNavigate } from 'react-router';
-import { updateRecipe } from '../../store/recipeReducer';
+//import { updateRecipe } from '../../store/recipeReducer';
 import { toast } from 'react-toastify';
+import { updateRecipe } from '../../store/testRecipeReducer';
 
 const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, postedBy }) => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, p
   const handleSeeMore = () => {
     router(`/${id}`);
   }
+  
   return (
     <div className="recipe_card_home">
       <div className='info_recipe'>
@@ -76,4 +78,4 @@ const RecipeCardHome = ({ id, image, title, description, ingredients, ratings, p
   )
 }
 
-export default RecipeCardHome
+export default React.memo(RecipeCardHome)

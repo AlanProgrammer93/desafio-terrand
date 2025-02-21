@@ -3,7 +3,6 @@ import clientAxios from "../utils/axios";
 
 export const fetchRecipes = createAsyncThunk("testRecipes/fetchRecipes", async () => {
   const { data } = await clientAxios.get("/recipe");
-  console.log("HACE LA PETICION");
   return data.recipes;
 });
 
@@ -14,7 +13,21 @@ const testRecipeSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {}, 
+  reducers: {
+    updateRecipe(state, action) {
+      const { id, user, rating } = action.payload;
+
+      const auxRecipes = [...state.testRecipes];
+      const recipe = auxRecipes.find((item) => item._id === id);
+      const ratingExist = recipe.ratings.find((rat) => rat.ratingBy._id === user._id);
+      
+      if (ratingExist) {
+          ratingExist.rating = rating;
+      } else {
+          recipe.ratings = [...recipe.ratings, { rating: rating, ratingBy: user }]
+      }
+  },
+  }, 
   extraReducers: (builder) => {
     builder
       .addCase(fetchRecipes.pending, (state) => {
@@ -34,5 +47,7 @@ const testRecipeSlice = createSlice({
       });
   },
 });
+
+export const { updateRecipe } = testRecipeSlice.actions;
 
 export default testRecipeSlice.reducer;
