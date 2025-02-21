@@ -7,25 +7,34 @@ import RecipeCardHome from '../../components/RecipeCardHome';
 import { addRecipes } from '../../store/recipeReducer';
 import { SERVER } from '../../constants';
 import Spinner from '../../components/Spinner';
+import { fetchRecipes } from '../../store/testRecipeReducer';
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const { recipes } = useSelector((state) => state.recipes);
-
+  //const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(true)
+
+  /* const { testRecipes, loading, error } = useSelector((state) => state.testRecipes);
+  useEffect(() => {
+    if (testRecipes?.length === 0) {
+      dispatch(fetchRecipes());
+    }
+  }, [dispatch, testRecipes?.length]); */
 
   useEffect(() => {
     getRecipes()
   }, [])
 
   const getRecipes = async () => {
-    //setLoading(true)
     await clientAxios.get('/recipe')
       .then(res => {
         dispatch(addRecipes(res.data.recipes));
+        //setRecipes(res.data.recipes)
       })
       .finally(e => setLoading(false))
   }
+  
   return (
     <div className="home_container">
       <Navbar />

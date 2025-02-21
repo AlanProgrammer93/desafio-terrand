@@ -12,30 +12,31 @@ import Spinner from '../../components/Spinner';
 const ProfileScreen = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
-    const { ownRecipes } = useSelector((state) => state.ownRecipes);
+    //const { ownRecipes } = useSelector((state) => state.ownRecipes);
+    const [ownRecipes, setOwnRecipes] = useState([])
 
     const [modalForm, setModalForm] = useState(false)
-    const [loading, setLoading] = useState(false)
-    
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         getOwnRecipes()
     }, [])
 
     const getOwnRecipes = async () => {
-        setLoading(true)
+        //setLoading(true)
         await clientAxios.get('/recipe/own-recipes', {
             headers: {
                 token: localStorage.getItem('token')
             }
         })
             .then(res => {
-                dispatch(addOwnRecipes(res.data.recipes));
+                //dispatch(addOwnRecipes(res.data.recipes));
+                setOwnRecipes(res.data.recipes)
             })
             .finally(e => {
                 setLoading(false)
             })
     }
-
     return (
         <div className='profile_container'>
             <Navbar />
